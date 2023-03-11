@@ -21,6 +21,16 @@ def predict_clusters_version1(centroids: list) -> list:
     return clusters_for_test_feture
 
 
+def predict_clusters_version2(test_feature: list, centroids: list) -> np.ndarray:
+    test_feature = np.array(test_feature)[:, np.newaxis]
+    centroids = np.array(centroids)[:, np.newaxis]
+
+    # produce cluster ids with numpy
+    clusters_np = np.argmin(cdist(test_feature, centroids), axis=1)
+    # produce cluster ids with sklearn
+    # clusters_sklearn = pairwise_distances_argmin(test_feature, centroids)
+    return clusters_np
+
 
 training_feature = generate_items(10000)
 
@@ -36,13 +46,5 @@ test_feature = generate_items(2000)
 clusters_for_test_feture = predict_clusters_version1(centroids)
 
 # runs faster
-# convert to matrices
-test_feature = np.array(test_feature)[:, np.newaxis]
-centroids = np.array(centroids)[:, np.newaxis]
-
-# produce cluster ids with numpy
-clusters_np = np.argmin(cdist(test_feature, centroids), axis=1)
-
-# produce cluster ids with sklearn
-clusters_sklearn = pairwise_distances_argmin(test_feature, centroids)
+clusters_np = predict_clusters_version2(test_feature, centroids)
 
