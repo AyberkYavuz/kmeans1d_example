@@ -13,6 +13,15 @@ def generate_items(n_items: int) -> list:
     return items
 
 
+def predict_clusters_version1(centroids: list) -> list:
+    clusters_for_test_feture = []
+    for x in test_feature:
+        distances = [abs(x - c) for c in centroids]
+        clusters_for_test_feture.append(distances.index(min(distances)))
+    return clusters_for_test_feture
+
+
+
 training_feature = generate_items(10000)
 
 k = 10
@@ -24,10 +33,7 @@ test_feature = generate_items(2000)
 
 # runs slow
 # produce cluster ids for test_feature
-clusters_for_test_feture = []
-for x in test_feature:
-    distances = [abs(x - c) for c in centroids]
-    clusters_for_test_feture.append(distances.index(min(distances)))
+clusters_for_test_feture = predict_clusters_version1(centroids)
 
 # runs faster
 # convert to matrices
